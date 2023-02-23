@@ -16,7 +16,7 @@ class MineField:
         x_dim: int,
         y_dim: int,
         mine_count: int,
-        random_seed: int | None,
+        random_seed: int | None = None,
     ) -> None:
         """Initialize minefield.
 
