@@ -1,17 +1,17 @@
 # py_mine
 
-The `prototype.ipynb` notebook contains the prototype of the minefield logic and data model.
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/DSuveges/py_mine/master.svg)](https://results.pre-commit.ci/latest/github/DSuveges/py_mine/master)
 
-## Summary of the logic
 
-1. The minefield object can be initialized by providing the x and y lenght of the fields + number of mines.
-2. Upon initialization the coordinates of the provided number of mines are generated within the field.
-3. Upon "clicking" on a filed the number of mines in the neighbouring fields is returned.
-4. Clicking on a coordinate of a mine will return 1 - indicating death.
-5. Each click is stored in a list. If clicking in a field which has alrady been clicked triggers the return of 2.
-6. If the number of mines in the neighbouring fields is zero, then clicking all neighbouring cells recursively.
-7. If the number of mines == number of un-clicked fields, triggers the return of -1 indicating winning.
+A simple pygame implementation of minesweeper.
 
+## Current state
+
+- Minefield logic implemented.
+- Custom dimensions of the minefield + custom number of mines.
+- Logic on handling clicks on mine/numbered and zero field
+- Flagging implemented.
+- Pygame integration is lagging behind. So far only the empty field is plotted.
 
 ## Other features
 
@@ -19,19 +19,23 @@ The `prototype.ipynb` notebook contains the prototype of the minefield logic and
 - Matrix can be plotted as ASCII characters:
 
 ```text
-X X X X X X X X 1 0
-X X X X X X 2 1 1 0
-X X X X X 2 1 0 0 0
-X X X X X 1 0 0 1 1
-X 1 X X 2 1 0 0 1 X
-X 1 X X 1 0 0 0 1 1
-X X X X 1 1 1 0 0 0
-X X X X X X 1 0 0 0
-X X X 2 1 1 1 0 0 0
-X X X 1 0 0 0 0 0 0
+                1 1
+      1 1 1   1 2 ⚑
+      1 ⚑ 1   1 ⚑ X
+1 1 1 1 X 1   1 2 X
+X X X X X 1     1 ⚑
+X X X X ⚑ 1     1 1
+X X X X 2 1
+X X X ⚑ 1
+X 1 1 1 1
+⚑ 1           1 1 1
+1 2 1 1     1 2 ⚑ X
+  1 ⚑ 1     1 ⚑ X X
+  1 1 1     1 2 X X
+              1 X X
 ```
 
-- The object can return the numpy version of the minefield.
+- The object can return the numpy version of the minefield that is used for plotting by pygame.
 
 ## TODOS
 

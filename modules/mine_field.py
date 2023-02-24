@@ -78,14 +78,17 @@ class MineField:
         """
         # Check if field is already clicked -> do nothing and return
         if click in self.clicked:
-            return
+            logger.info(f"Field is already clicked: {click}")
 
         # Check if field is already flagged -> unflag and return
-        if click in self.flagged:
+        elif click in self.flagged:
+            logger.info(f"Unflagging: {click}")
             self.flagged.remove(click)
 
         # Flag and return
-        self.flagged.append(click)
+        else:
+            logger.info(f"Flagging: {click}")
+            self.flagged.append(click)
 
     def get_mine_count(self: MineField, neighbour_indices: np.ndarray) -> int:
         """Get number of mines in a provided list of position.
@@ -147,10 +150,16 @@ class MineField:
     def plot_matrix_ascii(self: MineField) -> None:
         """Print out the matrix in ASCII."""
         plot = ""
-        for row in self.matrix:
-            for item in row:
-                if item == 9 or np.isnan(item):
+        (x_dim, y_dim) = self.matrix.shape
+        for x in range(x_dim):
+            for y in range(y_dim):
+                item = self.matrix[x, y]
+                if (x, y) in self.flagged:
+                    plot += "⚑ "
+                elif np.isnan(item):
                     plot += "X "
+                elif item == 0:
+                    plot += "  "
                 else:
                     plot += f"{int(item)} "
             plot += "\n"
