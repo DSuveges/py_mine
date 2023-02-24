@@ -1,7 +1,7 @@
 # py_mine
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/DSuveges/py_mine/master.svg)](https://results.pre-commit.ci/latest/github/DSuveges/py_mine/master)
-
+[![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 
 A simple pygame implementation of minesweeper.
 
