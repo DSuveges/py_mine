@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 import sys
+import time
 from typing import TYPE_CHECKING
 
 import hydra
@@ -142,8 +143,8 @@ class MineSweeper:
         """By providing configuration the game object is initialized."""
         # Initialize minefield with parameters:
         self.mine_field = MineField(
-            x_dim=cfg.matrix_parameters.x_dim,
-            y_dim=cfg.matrix_parameters.y_dim,
+            x_dim=cfg.matrix_parameters.y_dim,
+            y_dim=cfg.matrix_parameters.x_dim,
             mine_count=cfg.matrix_parameters.mine_count,
         )
 
@@ -161,6 +162,7 @@ class MineSweeper:
         """Main loop that handles gameplay."""
         while True:
             pygame.display.flip()
+            time.sleep(5)
 
 
 @hydra.main(version_base=None, config_path="configuration", config_name="config")

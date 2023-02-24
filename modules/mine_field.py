@@ -58,6 +58,9 @@ class MineField:
         # Initialize clicked fields:
         self.clicked: list[tuple] = []
 
+        # Initialize flagged fields:
+        self.flagged: list[tuple] = []
+
     def set_cell_value(self: MineField, click: tuple, value: int) -> None:
         """Set value of the matrix for a given position.
 
@@ -66,6 +69,23 @@ class MineField:
             value (int): a value to be set
         """
         self.matrix.itemset(click, value)
+
+    def flag_field(self: MineField, click: tuple) -> None:
+        """Flagging clicked field if eligible.
+
+        Args:
+            click (tuple): Indices of the flagged field.
+        """
+        # Check if field is already clicked -> do nothing and return
+        if click in self.clicked:
+            return
+
+        # Check if field is already flagged -> unflag and return
+        if click in self.flagged:
+            self.flagged.remove(click)
+
+        # Flag and return
+        self.flagged.append(click)
 
     def get_mine_count(self: MineField, neighbour_indices: np.ndarray) -> int:
         """Get number of mines in a provided list of position.
@@ -143,6 +163,7 @@ class MineField:
         Different events might triggered:
         - If clicked on a mine, return 1
         - If field already clicked, return 2
+        - If field currently flagged, return 3
         - If clicked on none-mine, return 0
         - If all fields are cleared, return -1
 
@@ -160,9 +181,12 @@ class MineField:
         if click in self.clicked:
             logging.info(f"The field: {click} is already clicked on.")
             return 2
-
+        # Test if field flagged:
+        elif click in self.flagged:
+            logging.info(f"The field: {click} is currently flagged.")
+            return 3
         # Are we clicking on a mine:
-        if list(click) in self.mine_coordinates:
+        elif list(click) in self.mine_coordinates:
             print("Game over. You clicked on a mine! :(")
             return 1
 
