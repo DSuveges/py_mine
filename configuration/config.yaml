@@ -3,8 +3,11 @@ matrix_parameters:
   y_dim: 15
   mine_count: 10
 plot_parameters:
-  unit_length: 25
+  unit_length: 40
   unclicked:
     base_color: gray70
     light_color: gray77
     dark_color: gray57
+  flag:
+    base_color: grey17
+    flag_color: crimson

@@ -13,6 +13,8 @@ A simple pygame implementation of minesweeper.
 - Flagging implemented.
 - Pygame integration is lagging behind. So far only the empty field is plotted.
 
+![Minefield with flag](screens/minefield_01.png)
+
 ## Other features
 
 - Logging enabled.

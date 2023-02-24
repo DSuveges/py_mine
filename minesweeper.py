@@ -47,11 +47,14 @@ class MineFieldPlot:
             coordinates[1] * self.unit_length,
         )
 
-    def plot(self: MineFieldPlot, minefield_matrix: ndarray) -> None:
+    def plot(
+        self: MineFieldPlot, minefield_matrix: ndarray, flags: list[tuple]
+    ) -> None:
         """Main loop for plotting values in the matrix.
 
         Args:
             minefield_matrix (ndarray): Minefield matrix
+            flags (list): List of flag coordinates:
         """
         # Looping through the matrix both directions:
         for x in range(self.cfg.matrix_parameters.x_dim):
@@ -61,6 +64,10 @@ class MineFieldPlot:
 
                 if np.isnan(value):
                     self.plot_nan(scaled_coordinates)
+        # Adding flags:
+        for flag in flags:
+            scaled_coordinates = self.scale_coordinate(flag)
+            self.plot_flag(scaled_coordinates)
 
     def plot_nan(self: MineFieldPlot, coordinates: tuple) -> None:
         """Plotting unexplored fields in the matrix.
@@ -114,15 +121,47 @@ class MineFieldPlot:
         raise NotImplementedError
 
     def plot_flag(self: MineFieldPlot, coordinates: tuple) -> None:
-        """Not implemented.
+        """Draw flags on the minefield.
 
         Args:
-            coordinates (tuple): _description_
-
-        Raises:
-            NotImplementedError: _description_
+            coordinates (tuple): x,y coordinates of the flag.
         """
-        raise NotImplementedError
+        base_color = self.cfg.plot_parameters.flag.base_color
+        flag_color = self.cfg.plot_parameters.flag.flag_color
+
+        # Scaled coordinates for base:
+        (x, y) = coordinates
+
+        # Drawing the flag:
+        flag_coordinates = [(0.5, 0.2), (0.6, 0.2), (0.6, 0.5), (0.5, 0.5), (0.2, 0.35)]
+        pygame.draw.polygon(
+            self.display,
+            flag_color,
+            [
+                (x + self.unit_length * f[0], x + self.unit_length * f[1])
+                for f in flag_coordinates
+            ],
+        )
+
+        # Drawing the flag base:
+        flag_base_coordinates = [
+            (0.5, 0.5),
+            (0.6, 0.5),
+            (0.6, 0.7),
+            (0.8, 0.75),
+            (0.8, 0.8),
+            (0.2, 0.8),
+            (0.2, 0.75),
+            (0.5, 0.7),
+        ]
+        pygame.draw.polygon(
+            self.display,
+            base_color,
+            [
+                (x + self.unit_length * f[0], x + self.unit_length * f[1])
+                for f in flag_base_coordinates
+            ],
+        )
 
     def plot_mine(self: MineFieldPlot, coordinates: tuple) -> None:
         """Not implemented.
@@ -148,6 +187,9 @@ class MineSweeper:
             mine_count=cfg.matrix_parameters.mine_count,
         )
 
+        # Adding flag:
+        self.mine_field.flag_field((5, 5))
+
         # Store display:
         self.display = display
         self.clock = pygame.time.Clock()
@@ -156,13 +198,12 @@ class MineSweeper:
         self.plotter = MineFieldPlot(cfg, display)
 
         # Plot minefield:
-        self.plotter.plot(self.mine_field.get_matrix())
+        self.plotter.plot(self.mine_field.get_matrix(), self.mine_field.flagged)
 
     def play(self: MineSweeper) -> None:
         """Main loop that handles gameplay."""
-        while True:
-            pygame.display.flip()
-            time.sleep(5)
+        pygame.display.flip()
+        time.sleep(10)
 
 
 @hydra.main(version_base=None, config_path="configuration", config_name="config")
