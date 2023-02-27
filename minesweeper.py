@@ -66,20 +66,18 @@ class MineFieldPlot:
         # Filling with background color:
         self.display.fill(self.cfg.plot_parameters.clicked.base_color)
 
-        # Looping through the matrix both directions:
+        # Looping through the matrix both dimensions:
         for x in range(self.cfg.matrix_parameters.x_dim):
             for y in range(self.cfg.matrix_parameters.y_dim):
-                value = minefield_matrix[x, y]
+                matrix_value = minefield_matrix[x, y]
                 scaled_coordinates = self.scale_coordinate((x, y))
 
                 # Drawing unclicked:
-                if np.isnan(value):
+                if np.isnan(matrix_value):
                     self.plot_nan(scaled_coordinates)
-
                 # Drawing cliced:
                 else:
-                    print((x, y, value))
-                    self.plot_number(scaled_coordinates, value)
+                    self.plot_number(scaled_coordinates, matrix_value)
 
         # Adding flags:
         for flag in flags:
@@ -248,9 +246,10 @@ class MineSweeper:
             events = pygame.event.get()
 
             for event in events:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.X_DOWN:
-                        break
+                if (event.type == pygame.KEYDOWN) and (event.key == pygame.K_x):
+                    print("Escape!!")
+                    pygame.quit()
+                    break
 
                 # handle MOUSEBUTTONUP
                 elif event.type == pygame.MOUSEBUTTONUP:

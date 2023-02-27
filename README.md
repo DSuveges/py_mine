@@ -11,7 +11,7 @@ A simple pygame implementation of minesweeper.
 - Custom dimensions of the minefield + custom number of mines.
 - Logic on handling clicks on mine/numbered and zero field
 - Flagging implemented.
-- Pygame integration is lagging behind. So far only the empty field is plotted.
+- Currently only text output tells if player won or lost
 
 ![Minefield with flag](screens/minefield_01.png)
 

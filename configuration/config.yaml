@@ -1,9 +1,9 @@
 matrix_parameters:
-  x_dim: 10
-  y_dim: 15
-  mine_count: 10
+  x_dim: 30
+  y_dim: 20
+  mine_count: 100
 plot_parameters:
-  unit_length: 30
+  unit_length: 25
   unclicked:
     base_color: gray70
     light_color: gray77
