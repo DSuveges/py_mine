@@ -63,7 +63,9 @@ class MineFieldPlot:
             minefield_matrix (ndarray): Minefield matrix
             flags (list): List of flag coordinates:
         """
-        print(minefield_matrix)
+        # Filling with background color:
+        self.display.fill(self.cfg.plot_parameters.clicked.base_color)
+
         # Looping through the matrix both directions:
         for x in range(self.cfg.matrix_parameters.x_dim):
             for y in range(self.cfg.matrix_parameters.y_dim):
@@ -76,6 +78,7 @@ class MineFieldPlot:
 
                 # Drawing cliced:
                 else:
+                    print((x, y, value))
                     self.plot_number(scaled_coordinates, value)
 
         # Adding flags:
@@ -228,12 +231,6 @@ class MineSweeper:
             mine_count=cfg.matrix_parameters.mine_count,
         )
 
-        # Adding flag:
-        self.mine_field.flag_field((5, 5))
-
-        # click:
-        self.mine_field.click_on((1, 1))
-
         # Store display:
         self.display = display
         self.clock = pygame.time.Clock()
@@ -269,9 +266,11 @@ class MineSweeper:
                             self.plotter.screen_to_matrix_position_convert(pos)
                         )
 
-                # After any event, we re-plot the field:
-                self.plotter.plot(self.mine_field.get_matrix(), self.mine_field.flagged)
-                pygame.display.flip()
+                    # After any event, we re-plot the field:
+                    self.plotter.plot(
+                        self.mine_field.get_matrix(), self.mine_field.flagged
+                    )
+                    pygame.display.flip()
 
 
 @hydra.main(version_base=None, config_path="configuration", config_name="config")
