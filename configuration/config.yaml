@@ -3,7 +3,7 @@ matrix_parameters:
   y_dim: 15
   mine_count: 10
 plot_parameters:
-  unit_length: 40
+  unit_length: 30
   unclicked:
     base_color: gray70
     light_color: gray77
@@ -11,3 +11,15 @@ plot_parameters:
   flag:
     base_color: grey17
     flag_color: crimson
+  clicked:
+    base_color: gray78
+    border_color: gray62
+    number_colors:
+      - cornflowerblue # 1
+      - chartreuse4 # 2
+      - firebrick1 # 3
+      - midnightblue # 4
+      - darkred # 5
+      - olivedrab # 6
+      - darkslategray # 7
+      - coral # 8

@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import logging
 import sys
-import time
 from typing import TYPE_CHECKING
 
 import hydra
@@ -33,6 +32,14 @@ class MineFieldPlot:
         self.unit_length = self.cfg.plot_parameters.unit_length
         self.unit_offset = self.unit_length / 10
 
+        # Initialize text on matrix:
+        self.font = pygame.font.SysFont(
+            "novamono", int(self.unit_length * 0.6), bold=True
+        )
+
+        # Filling with background color:
+        self.display.fill(cfg.plot_parameters.clicked.base_color)
+
     def scale_coordinate(self: MineFieldPlot, coordinates: tuple) -> tuple:
         """Scale x,y coordinates of the matrix to screen.
 
@@ -56,14 +63,21 @@ class MineFieldPlot:
             minefield_matrix (ndarray): Minefield matrix
             flags (list): List of flag coordinates:
         """
+        print(minefield_matrix)
         # Looping through the matrix both directions:
         for x in range(self.cfg.matrix_parameters.x_dim):
             for y in range(self.cfg.matrix_parameters.y_dim):
                 value = minefield_matrix[x, y]
                 scaled_coordinates = self.scale_coordinate((x, y))
 
+                # Drawing unclicked:
                 if np.isnan(value):
                     self.plot_nan(scaled_coordinates)
+
+                # Drawing cliced:
+                else:
+                    self.plot_number(scaled_coordinates, value)
+
         # Adding flags:
         for flag in flags:
             scaled_coordinates = self.scale_coordinate(flag)
@@ -109,16 +123,32 @@ class MineFieldPlot:
         pygame.draw.rect(self.display, rgb, rect_dim)
 
     def plot_number(self: MineFieldPlot, coordinates: tuple, number: int) -> None:
-        """Not implemented.
+        """_summary_Plotting clicked fields with numbers.
 
         Args:
-            coordinates (tuple): _description_
-            number (int): _description_
-
-        Raises:
-            NotImplementedError: _description_
+            coordinates (tuple): Scaled coordinales for the clicked field
+            number (int): Number in the clicked field
         """
-        raise NotImplementedError
+        border_color = self.cfg.plot_parameters.clicked.border_color
+        rect_dim = [
+            coordinates[0],  # x coordinate shifted to the right by the offset
+            coordinates[1],  # y coordinate shifted to the bottom by the offset
+            self.unit_length,  #
+            self.unit_length,
+        ]
+        pygame.draw.rect(self.display, border_color, rect_dim, 1)
+
+        # return if the number is zero:
+        if number == 0:
+            return
+
+        # Plot number:
+        number_color = self.cfg.plot_parameters.clicked.number_colors[int(number - 1)]
+
+        label = self.font.render(str(int(number)), True, number_color)
+        x_center_offset = self.unit_length / 3
+
+        self.display.blit(label, (coordinates[0] + x_center_offset, coordinates[1]))
 
     def plot_flag(self: MineFieldPlot, coordinates: tuple) -> None:
         """Draw flags on the minefield.
@@ -138,7 +168,7 @@ class MineFieldPlot:
             self.display,
             flag_color,
             [
-                (x + self.unit_length * f[0], x + self.unit_length * f[1])
+                (x + self.unit_length * f[0], y + self.unit_length * f[1])
                 for f in flag_coordinates
             ],
         )
@@ -158,7 +188,7 @@ class MineFieldPlot:
             self.display,
             base_color,
             [
-                (x + self.unit_length * f[0], x + self.unit_length * f[1])
+                (x + self.unit_length * f[0], y + self.unit_length * f[1])
                 for f in flag_base_coordinates
             ],
         )
@@ -173,6 +203,17 @@ class MineFieldPlot:
             NotImplementedError: _description_
         """
         raise NotImplementedError
+
+    def screen_to_matrix_position_convert(self: MineFieldPlot, pos: tuple) -> tuple:
+        """Convert screen coordinates to matrix coordinates.
+
+        Args:
+            pos (tuple): Screen coordinates captured by pygame.
+
+        Returns:
+            tuple: Converted coordinates with a tuple.
+        """
+        return (int(pos[0] / self.unit_length), int(pos[1] / self.unit_length))
 
 
 class MineSweeper:
@@ -190,6 +231,9 @@ class MineSweeper:
         # Adding flag:
         self.mine_field.flag_field((5, 5))
 
+        # click:
+        self.mine_field.click_on((1, 1))
+
         # Store display:
         self.display = display
         self.clock = pygame.time.Clock()
@@ -199,11 +243,35 @@ class MineSweeper:
 
         # Plot minefield:
         self.plotter.plot(self.mine_field.get_matrix(), self.mine_field.flagged)
+        pygame.display.flip()
 
     def play(self: MineSweeper) -> None:
         """Main loop that handles gameplay."""
-        pygame.display.flip()
-        time.sleep(10)
+        while True:
+            events = pygame.event.get()
+
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.X_DOWN:
+                        break
+
+                # handle MOUSEBUTTONUP
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    pos = pygame.mouse.get_pos()
+                    # Click on field:
+                    if event.button == 1:
+                        self.mine_field.click_on(
+                            self.plotter.screen_to_matrix_position_convert(pos)
+                        )
+                    # Flagging:
+                    elif event.button == 3:
+                        self.mine_field.flag_field(
+                            self.plotter.screen_to_matrix_position_convert(pos)
+                        )
+
+                # After any event, we re-plot the field:
+                self.plotter.plot(self.mine_field.get_matrix(), self.mine_field.flagged)
+                pygame.display.flip()
 
 
 @hydra.main(version_base=None, config_path="configuration", config_name="config")
