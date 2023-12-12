@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "A small implementation of mine sweeper using pygame"
 authors = ["Daniel Suveges <daniel.suveges@protonmail.com>"]
 readme = "README.md"
-packages = [{include = "py_mine"}]
 
 [tool.poetry.dependencies]
 python = "3.8.15"
