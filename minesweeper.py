@@ -34,7 +34,7 @@ class MineFieldPlot:
 
         # Initialize text on matrix:
         self.font = pygame.font.SysFont(
-            "novamono", int(self.unit_length * 0.6), bold=True
+            "novamono", int(self.unit_length * 1), bold=True
         )
 
         # Filling with background color:
@@ -293,7 +293,6 @@ def main(cfg: DictConfig) -> None:
 
 
 if __name__ == "__main__":
-
     # Initialize logger:
     logging.basicConfig(
         level=logging.INFO,
