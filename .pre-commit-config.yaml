@@ -26,23 +26,13 @@ repos:
       - id: python-use-type-annotations
       - id: python-check-blanket-noqa
 
-  - repo: https://github.com/asottile/yesqa
-    rev: v1.5.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.13
     hooks:
-      - id: yesqa
-        additional_dependencies: &flake8_deps
-          - flake8-annotations==2.9.0
-          - flake8-bugbear==22.7.1
-          - flake8-comprehensions==3.10.0
-          - flake8-quotes==3.3.1
-          - flake8-simplify==0.19.3
-          - flake8-tidy-imports==4.8.0
-          - flake8-type-checking==2.1.2
-          - flake8-typing-imports==1.12.0
-          - flake8-use-fstring==1.4
-          - flake8-docstrings
-          - pep8-naming==0.13.1
-          - darglint
+      - id: ruff
+        args:
+          - --fix
+      - id: ruff-format
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
@@ -62,13 +52,6 @@ repos:
     hooks:
       - id: isort
         args: [--add-import, from __future__ import annotations, --profile, black]
-
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        additional_dependencies: *flake8_deps
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.10.0
