@@ -1,4 +1,5 @@
 """This is the main script to run minesweeper."""
+
 from __future__ import annotations
 
 import logging

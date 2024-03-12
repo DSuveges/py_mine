@@ -1,4 +1,5 @@
 """This module contains logic for the minefield."""
+
 from __future__ import annotations
 
 import logging
