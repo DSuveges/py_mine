@@ -27,7 +27,7 @@ repos:
       - id: python-check-blanket-noqa
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.7
+    rev: v0.11.4
     hooks:
       - id: ruff
         args:
@@ -48,13 +48,13 @@ repos:
         args: [--all]
 
   - repo: https://github.com/pycqa/isort
-    rev: 6.0.0
+    rev: 6.0.1
     hooks:
       - id: isort
         args: [--add-import, from __future__ import annotations, --profile, black]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.21.0
+    rev: v9.22.0
     hooks:
       - id: commitlint
         additional_dependencies: ['@commitlint/config-conventional']
