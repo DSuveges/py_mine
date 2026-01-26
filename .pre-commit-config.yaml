@@ -27,7 +27,7 @@ repos:
       - id: python-check-blanket-noqa
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.12
+    rev: v0.14.14
     hooks:
       - id: ruff
         args:
@@ -35,33 +35,33 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.20.0
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
         args:
           - --py37-plus
 
   - repo: https://github.com/hadialqattan/pycln
-    rev: v2.5.0
+    rev: v2.6.0
     hooks:
       - id: pycln
         args: [--all]
 
   - repo: https://github.com/pycqa/isort
-    rev: 6.0.1
+    rev: 7.0.0
     hooks:
       - id: isort
         args: [--add-import, from __future__ import annotations, --profile, black]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.22.0
+    rev: v9.24.0
     hooks:
       - id: commitlint
         additional_dependencies: ['@commitlint/config-conventional']
         stages: [commit-msg]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.17.1'
+    rev: 'v1.19.1'
     hooks:
       - id: mypy
 
@@ -77,6 +77,6 @@ repos:
       - id: pydocstyle
         args: [--convention=google]
   - repo: https://github.com/lovesegfault/beautysh
-    rev: v6.2.1
+    rev: v6.4.2
     hooks:
       - id: beautysh
