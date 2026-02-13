@@ -10,7 +10,7 @@ import hydra
 import numpy as np
 import pygame
 
-from modules.mine_field import MineField
+from py_mine.mine_field import MineField
 
 if TYPE_CHECKING:
     from numpy import ndarray
