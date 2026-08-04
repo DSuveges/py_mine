@@ -135,7 +135,7 @@ class MineFieldPlot:
         rect_dim = [
             coordinates[0],  # x coordinate shifted to the right by the offset
             coordinates[1],  # y coordinate shifted to the bottom by the offset
-            self.unit_length,  #
+            self.unit_length,
             self.unit_length,
         ]
         pygame.draw.rect(self.display, border_color, rect_dim, 1)
