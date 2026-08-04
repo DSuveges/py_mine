@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class MineField:
@@ -189,11 +189,11 @@ class MineField:
 
         # Test if we have already clicked:
         if click in self.clicked:
-            logging.info(f"The field: {click} is already clicked on.")
+            logger.info(f"The field: {click} is already clicked on.")
             return 2
         # Test if field flagged:
         elif click in self.flagged:
-            logging.info(f"The field: {click} is currently flagged.")
+            logger.info(f"The field: {click} is currently flagged.")
             return 3
         # Are we clicking on a mine:
         elif list(click) in self.mine_coordinates:
